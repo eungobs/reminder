@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather & Calendar App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #b3c6ff; /* Cloudy background color */
+        }
+
+        .app-container {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            position: relative;
+            width: 300px;
+            z-index: 1;
+        }
+
+        .weather-container,
+        .calendar-container,
+        .clock-container {
+            margin-top: 20px;
+        }
+
+        button {
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #weatherEmoji {
+            font-size: 30px;
+        }
+
+        #dayNight {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: auto repeat(6, 1fr);
+            gap: 1px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        .month {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .day {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .current-day {
+            background-color: #ffcccc;
+            border-radius: 50%;
+        }
+
+        /* Define unique colors for each number */
+        .day[data-day="1"] { background-color: #ff9999; }
+        .day[data-day="2"] { background-color: #99ff99; }
+        .day[data-day="3"] { background-color: #9999ff; }
+        .day[data-day="4"] { background-color: #ffff99; }
+        .day[data-day="5"] { background-color: #ff99ff; }
+        .day[data-day="6"] { background-color: #99ffff; }
+        .day[data-day="7"] { background-color: #ffcc99; }
+        .day[data-day="8"] { background-color: #cc99ff; }
+        .day[data-day="9"] { background-color: #99ffcc; }
+        .day[data-day="10"] { background-color: #ffccff; }
+        .day[data-day="11"] { background-color: #ccff99; }
+        .day[data-day="12"] { background-color: #99ccff; }
+        .day[data-day="13"] { background-color: #ff9966; }
+        .day[data-day="14"] { background-color: #6699ff; }
+        .day[data-day="15"] { background-color: #ff66cc; }
+        .day[data-day="16"] { background-color: #66ffcc; }
+        .day[data-day="17"] { background-color: #cc66ff; }
+        .day[data-day="18"] { background-color: #66ccff; }
+        .day[data-day="19"] { background-color: #ff6600; }
+        .day[data-day="20"] { background-color: #66ff99; }
+        .day[data-day="21"] { background-color: #9900ff; }
+        .day[data-day="22"] { background-color: #00ff99; }
+        .day[data-day="23"] { background-color: #cc00ff; }
+        .day[data-day="24"] { background-color: #00ccff; }
+        .day[data-day="25"] { background-color: #ff3300; }
+        .day[data-day="26"] { background-color: #00ff66; }
+        .day[data-day="27"] { background-color: #6600ff; }
+        .day[data-day="28"] { background-color: #00ff00; }
+        .day[data-day="29"] { background-color: #ff00ff; }
+        .day[data-day="30"] { background-color: #00ffff; }
+        .day[data-day="31"] { background-color: #ff0000; }
+    </style>
+</head>
+<body onload="getWeatherForCurrentLocation()">
+    <!-- Add iframe for digital calendar -->
+    <div class="calendar-container">
+        <iframe src="https://idyllic-beijinho-32242f.netlify.app" frameborder="0"></iframe>
+    </div>
+
+    <div class="app-container">
+        <div class="weather-container">
+            <h1>Weather App</h1>
+            <label for="city">Enter City:</label>
+            <input type="text" id="city" placeholder="Enter city name">
+            <button onclick="getWeather()">Get Weather</button>
+            <div id="weatherInfo"></div>
+            <span id="weatherEmoji"></span>
+            <div id="dayNight"></div>
+        </div>
+
+        <!-- Clock container -->
+        <div class="clock-container" id="clock"></div>
+    </div>
+
+    <!-- Reminder section -->
+    <div class="reminder-section">
+        <h2>Set Reminder</h2>
+        <label for="reminderDate">Date:</label>
+        <input type="date" id="reminderDate">
+        <label for="reminderTime">Time:</label>
+        <input type="time" id="reminderTime">
+        <label for="reminderMessage">Message:</label>
+        <input type="text" id="reminderMessage" placeholder="Enter reminder message">
+        <button onclick="setReminder()">Set Reminder</button>
+    </div>
+
+    <audio id="reminderSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+
+    <script>
+        // Function to get user's location
+        function getWeatherForCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Callback function for successful location retrieval
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // coordinates to fetch weather
+            getWeatherByCoordinates(latitude, longitude);
+        }
+
+        // Callback function for handling errors
+        function showError(error) {
+            alert("Error getting location. Please enter a city manually.");
+        }
+
+        // Function to get weather by city name
+        async function getWeather() {
+            const apiKey = '3ed565296c19775878a64c31457d90b2';
+            const city = document.getElementById('city').value;
+
+            try {
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`);
+                const data = await response.json();
+
+                displayWeatherInfo(data);
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+                alert('Error fetching weather data. Please try again.');
+            }
+        }
+
+        // Function to get weather by coordinates
+        async function getWeatherByCoordinates(latitude, longitude) {
+            const apiKey = '3ed565296c19775878a64c31457d90b2';
+
+            try {
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`);
+                const data = await response.json();
+
+                displayWeatherInfo(data);
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+                alert('Error fetching weather data. Please try again.');
+            }
+        }
+
+        // Function to display weather information
+        function displayWeatherInfo(data) {
+            const weatherInfoElement = document.getElementById('weatherInfo');
+            const temperatureCelsius = (data.main.temp - 273.15).toFixed(2); // Convert temperature to Celsius
+
+            weatherInfoElement.innerHTML = `<h2>Weather in ${data.name}, ${data.sys.country}</h2>
+                                            <p>Temperature: ${temperatureCelsius} &#8451;</p>
+                                            <p>Weather: ${data.weather[0].description}</p>
+                                            <p>Humidity: ${data.main.humidity}%</p>
+                                            <p>Wind Speed: ${data.wind.speed} m/s</p>`;
+
+            const weatherEmojiElement = document.getElementById('weatherEmoji');
+            weatherEmojiElement.innerHTML = getWeatherEmoji(data.weather[0].main);
+
+            const dayNightElement = document.getElementById('dayNight');
+            dayNightElement.innerHTML = getDayNight(data.weather[0].icon, data.sys.sunrise, data.sys.sunset);
+        }
+
+        // Function to get weather emoji
+        function getWeatherEmoji(weather) {
+            switch (weather) {
+                case 'Clear':
+                    return '☀️'; // Sunny
+                case 'Clouds':
+                    return '☁️'; // Cloudy
+                case 'Rain':
+                    return '🌧️'; // Rainy
+                case 'Thunderstorm':
+                    return '⛈️'; // Thunderstorm
+                case 'Snow':
+                    return '❄️'; // Snowy
+                default:
+                    return '';
+            }
+        }
+
+        // Function to determine day or night
+        function getDayNight(icon, sunrise, sunset) {
+            const currentTimestamp = Math.floor(Date.now() / 1000);
+            const isDay = currentTimestamp > sunrise && currentTimestamp < sunset;
+
+            if (icon.includes('d') || isDay) {
+                return 'Day';
+            } else {
+                return 'Night';
+            }
+        }
+
+        // Update clock every second
+        setInterval(updateClock, 1000);
+
+        // Function to update clock
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            const timeString = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
+            document.getElementById('clock').innerText = timeString;
+        }
+
+        // Function to format time (add leading zero)
+        function formatTime(time) {
+            return time < 10 ? `0${time}` : time;
+        }
+
+        // Function to set reminder
+        function setReminder() {
+            const reminderDate = document.getElementById('reminderDate').value;
+            const reminderTime = document.getElementById('reminderTime').value;
+            const reminderMessage = document.getElementById('reminderMessage').value;
+
+            const reminder = {
+                date: reminderDate,
+                time: reminderTime,
+                message: reminderMessage
+            };
+
+            // Here you can save the reminder to a database or array
+            console.log('Reminder set:', reminder);
+            alert('Reminder set successfully:\nDate: ' + reminder.date + '\nTime: ' + reminder.time + '\nMessage: ' + reminder.message);
+
+            // Calculate the time remaining for the reminder
+            const currentTime = new Date();
+            const reminderDateTime = new Date(reminder.date + 'T' + reminder.time);
+            const timeDifference = reminderDateTime.getTime() - currentTime.getTime();
+
+            // Set timeout to trigger reminder
+            if (timeDifference > 0) {
+                setTimeout(() => {
+                    alert('Reminder: ' + reminder.message);
+                    document.getElementById('reminderSound').play(); // Play reminder sound
+                }, timeDifference);
+            }
+        }
+        // Function to play reminder sound
+function playReminderSound() {
+    const reminderSound = document.getElementById('reminderSound');
+    reminderSound.play();
+}
+
+    </script>
+</body>
+</html>
