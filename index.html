@@ -14,7 +14,7 @@
             justify-content: center;
             height: 100vh;
             overflow: hidden;
-            background-color: #b3c6ff; /* Cloudy background color */
+            background-color: #b3c6ff; 
         }
 
         .app-container {
@@ -289,7 +289,7 @@
                 message: reminderMessage
             };
 
-            // Here you can save the reminder to a database or array
+           
             console.log('Reminder set:', reminder);
             alert('Reminder set successfully:\nDate: ' + reminder.date + '\nTime: ' + reminder.time + '\nMessage: ' + reminder.message);
 
@@ -302,7 +302,7 @@
             if (timeDifference > 0) {
                 setTimeout(() => {
                     alert('Reminder: ' + reminder.message);
-                    document.getElementById('reminderSound').play(); // Play reminder sound
+                    document.getElementById('reminderSound').play();
                 }, timeDifference);
             }
         }
