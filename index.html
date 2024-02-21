@@ -23,7 +23,6 @@
             text-align: center;/* Align text to the center */
             padding: 20px;/* Add padding */
             background-color: rgba(255, 255, 255, 0.7);/* Semi-transparent white background */
-            border-radius: 15px; 
             border-radius: 15px; /* Rounded corners */
             position: relative;/* Set position to relative */
             width: 300px;/* Set width */
@@ -121,8 +120,6 @@
         .day[data-day="29"] { background-color: #ff00ff; }
         .day[data-day="30"] { background-color: #00ffff; }
         .day[data-day="31"] { background-color: #ff0000; }
-    </style>
-     /* CSS styles */
     </style>
 </head>
 <body onload="getWeatherForCurrentLocation()">
@@ -313,10 +310,10 @@
             }
         }
         // Function to play reminder sound
-function playReminderSound() {
-    const reminderSound = document.getElementById('reminderSound');
-    reminderSound.play();
-}
+        function playReminderSound() {
+            const reminderSound = document.getElementById('reminderSound');
+            reminderSound.play();
+        }
 
     </script>
 </body>
