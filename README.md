@@ -23,6 +23,15 @@ helps them make informed decisions regarding travel and outdoor activities.
 The calendar feature adds significant value to the South African Car Weather App, transforming it into a comprehensive tool for managing both weather-related information and daily schedules.
 It enhances user productivity and ensures that users stay informed and prepared for their upcoming events, regardless of the prevailing weather conditions.
 
+## Deployment
+The South African Car Weather App is deployed and accessible at [https://stirring-semolina-51654a.netlify.app](https://stirring-semolina-51654a.netlify.app).
+
+## Usage
+Once the app is running, you can:
+
+- Enter a city name to get real-time weather information.
+- Set reminders and schedules using the built-in calendar feature.
+
 
 ## Technology & Architecture
 The South African Car Weather App was developed using a combination of frontend and backend technologies. The frontend utilizes HTML, CSS, and JavaScript to create an intuitive and user-friendly interface. 
@@ -36,4 +45,8 @@ The provided code snippet illustrates the function responsible for retrieving we
 // Function to fetch weather data by city name
 async function getWeather() {
     // Code snippet here...
-}
+
+- [Car Weather App](https://github.com/eungobs/car-weather-app): A standalone version of the weather feature in this app.
+
+## Licensing
+This project is licensed under the MIT License. For more information, see the [LICENSE](LICENSE) file.
