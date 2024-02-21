@@ -45,6 +45,13 @@ Contributions are welcome! If you'd like to contribute to this project, please f
 4. Push to the branch: `git push origin feature-new-feature`.
 5. Submit a pull request.
 
+## Installation
+To run this project locally, follow these steps:
+
+1. Clone the repository: `git clone https://github.com/eungobs/reminder.git`
+2. Navigate to the project directory: `cd reminder`
+3. Open the index.html file in your web browser.
+
 ## Technology & Architecture
 The South African Car Weather App was developed using a combination of frontend and backend technologies. The frontend utilizes HTML, CSS, and JavaScript to create an intuitive and user-friendly interface. 
 On the backend, Node.js and Express.js were employed, with MongoDB serving as the database solution. This architecture ensures real-time delivery of accurate weather information to users.
