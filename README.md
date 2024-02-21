@@ -31,7 +31,19 @@ Once the app is running, you can:
 
 - Enter a city name to get real-time weather information.
 - Set reminders and schedules using the built-in calendar feature.
+ 
+## Related Projects
+Check out these related projects for further exploration:
 
+-:https://github.com/eungobs: A standalone version of the weather feature in this app.
+
+## Contributing
+Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature-new-feature`.
+3. Make your changes and commit them: `git commit -m 'Add some feature'`.
+4. Push to the branch: `git push origin feature-new-feature`.
+5. Submit a pull request.
 
 ## Technology & Architecture
 The South African Car Weather App was developed using a combination of frontend and backend technologies. The frontend utilizes HTML, CSS, and JavaScript to create an intuitive and user-friendly interface. 
@@ -46,7 +58,12 @@ The provided code snippet illustrates the function responsible for retrieving we
 async function getWeather() {
     // Code snippet here...
 
-- [Car Weather App](https://github.com/eungobs/car-weather-app): A standalone version of the weather feature in this app.
+## Author
+
+- **Elizabeth Eunice Ndzukule**
+- LinkedIn: https://www.linkedin.com/in/eunice-ngobeni-ndzukule-a24316140
+-Github: https://github.com/eungobs/reminder.git
+-Blog: https://eungobs.blogspot.com/2024/02/weather-app-for-modern-cars.html
 
 ## Licensing
 This project is licensed under the MIT License. For more information, see the [LICENSE](LICENSE) file.
